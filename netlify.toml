@@ -3,14 +3,18 @@
   publish = ".next"
   functions = "netlify/functions"
 
+[build.environment]
+  NODE_VERSION = "18.20.8"
+  NODE_ENV = "production"
+  NEXT_TELEMETRY_DISABLED = "1"
+
 [functions]
   node_bundler = "esbuild"
   external_node_modules = ["@neondatabase/serverless"]
   included_files = ["netlify/functions/utils/**"]
 
-[build.environment]
-  NODE_VERSION = "18"
-  NODE_ENV = "production"
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [[redirects]]
   from = "/*"
@@ -23,7 +27,11 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
     Access-Control-Allow-Headers = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    Cache-Control = "no-cache, no-store, must-revalidate"
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
 [[headers]]
   for = "/*.js"
